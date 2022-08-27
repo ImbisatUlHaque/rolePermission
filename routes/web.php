@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,8 +18,21 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
+// Route::get('/dashboard', function () {
+//     return view('dashboard');
+// })->middleware(['auth'])->name('dashboard');
 
+// Route::middleware(['auth'])->group(function () {
+    
+// });
+
+Route::group(['middleware'=>'auth'], function(){
+    Route::get('dashboard', [HomeController::class,'dashboard'])->name('dashboard');
+});
+
+Route::group(['middleware'=>'role:author'], function(){
+    Route::get('role', function(){
+        dd('hi');
+    });
+});
 require __DIR__.'/auth.php';
